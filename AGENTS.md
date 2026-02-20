@@ -19,6 +19,8 @@ This file serves as the main entry point for AI agents (LLMs) working on the Lin
 For detailed guidance on specific topics, refer to the modular documentation in the `/docs` directory. 
 ALWAYS refer to the relevant .md file BEFORE generating any code:
 
+- **UI Components**: [ui-components.md](docs/ui-components.md) - shadcn/ui usage guidelines and patterns
+- **Authentication**: [authentication.md](docs/authentication.md) - Clerk setup, protected routes, and auth patterns
 
 
 ## Core Principles
@@ -199,6 +201,8 @@ export async function POST(request: NextRequest) {
 
 ## Getting Help
 
+- **UI Components**: See [07-ui-components.md](docs/07-ui-components.md)
+- **Authentication & Authorization**: See [06-authentication.md](docs/06-authentication.md)
 - **Project Structure**: See [05-project-structure.md](docs/05-project-structure.md)
 - **TypeScript Issues**: See [01-typescript.md](docs/01-typescript.md)
 - **React/Next.js Questions**: See [02-react-nextjs.md](docs/02-react-nextjs.md)
