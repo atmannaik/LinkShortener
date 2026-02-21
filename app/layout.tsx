@@ -39,7 +39,7 @@ export default function RootLayout({
         >
           <header className="flex items-center justify-between border-b px-6 py-4">
             <span className="text-lg font-bold tracking-tight text-foreground">
-              LinkShortener
+              Link Shortener
             </span>
             <div className="flex items-center gap-2">
               <SignedOut>
