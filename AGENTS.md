@@ -18,6 +18,7 @@ This file serves as the main entry point for AI agents (LLMs) working on the Lin
 - ❌ Generate code without consulting the relevant `/docs` files
 - ❌ Assume patterns or conventions without verification
 - ❌ Skip documentation even for "simple" tasks
+- ❌ Create or use `middleware.ts` — it is deprecated in Next.js 16; use `proxy.ts` instead
 
 **This is non-negotiable.** The documentation exists to ensure consistency, quality, and adherence to project standards. Every code generation task requires reviewing the appropriate documentation first.
 
@@ -54,6 +55,19 @@ The modular documentation in the `/docs` directory contains ALL critical impleme
 - Database operations and schema changes
 - Project structure and organization
 
+
+## ⚠️ CRITICAL: middleware.ts is DEPRECATED — Use proxy.ts Instead
+
+**`middleware.ts` is NOT supported in this project.**
+
+Next.js 16 (the version used in this project) has deprecated `middleware.ts`. Using it will not work as expected.
+
+**INSTEAD, use `proxy.ts`** at the project root — this is the replacement for `middleware.ts` and is where all middleware logic (e.g., Clerk auth, route matching) must be placed.
+
+- ❌ **NEVER create or modify `middleware.ts`**
+- ✅ **ALWAYS use `proxy.ts`** for any middleware functionality
+
+---
 
 ## Core Principles
 
@@ -270,5 +284,6 @@ These guidelines ensure code consistency, maintainability, and quality.
 - ❌ Generate code without consulting the relevant documentation files
 - ❌ Assume you know the patterns without reading the docs
 - ❌ Skip documentation reading for any reason
+- ❌ Create or use `middleware.ts` — it is deprecated in Next.js 16 (this project); always use `proxy.ts` instead
 
 **Reading the documentation is not a suggestion—it is a mandatory requirement for every code generation task.**

@@ -81,7 +81,7 @@ export default async function Home() {
           Share smarter and measure what matters.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <SignUpButton mode="modal">
+          <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
             <Button size="lg" className="px-8">
               Get Started — It&apos;s Free
             </Button>
