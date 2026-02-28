@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink } from 'lucide-react';
 import { CreateLinkDialog } from './CreateLinkDialog';
+import { EditLinkDialog } from './EditLinkDialog';
+import { DeleteLinkDialog } from './DeleteLinkDialog';
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -40,9 +42,13 @@ export default async function DashboardPage() {
                         /{link.shortCode}
                       </Badge>
                     </CardTitle>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(link.createdAt).toLocaleDateString()}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(link.createdAt).toLocaleDateString()}
+                      </span>
+                      <EditLinkDialog link={link} />
+                      <DeleteLinkDialog link={link} />
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
