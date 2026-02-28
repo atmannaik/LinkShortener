@@ -4,6 +4,7 @@ import { getLinksByUserId } from '@/data/links';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink } from 'lucide-react';
+import { CreateLinkDialog } from './CreateLinkDialog';
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -16,7 +17,10 @@ export default async function DashboardPage() {
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold">Your Links</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Your Links</h1>
+        <CreateLinkDialog />
+      </div>
 
       {links.length === 0 ? (
         <Card>
