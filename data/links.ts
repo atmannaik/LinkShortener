@@ -53,6 +53,15 @@ export async function deleteLinkById(id: string): Promise<void> {
   await db.delete(links).where(eq(links.id, id));
 }
 
+export async function getLinkByShortCode(shortCode: string): Promise<SelectLink | undefined> {
+  const [link] = await db
+    .select()
+    .from(links)
+    .where(eq(links.shortCode, shortCode))
+    .limit(1);
+  return link;
+}
+
 export async function isShortCodeTakenExcluding(
   shortCode: string,
   excludeId: string
