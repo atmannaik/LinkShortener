@@ -1,3 +1,7 @@
+---
+description: Read this before creating or modifying any UI components in the project.
+---
+
 # UI Components Guidelines
 
 ## Overview

@@ -2,27 +2,8 @@
 
 ## Purpose
 
-This file serves as the main entry point for AI agents (LLMs) working on the LinkShortener project. All detailed coding standards, patterns, and best practices are documented in the `/docs` directory.
+This file serves as the main entry point for AI agents (LLMs) working on the LinkShortener project. All detailed coding standards, patterns.
 
----
-
-## ⚠️ CRITICAL: READ DOCUMENTATION FIRST
-
-**BEFORE GENERATING ANY CODE, YOU MUST:**
-
-1. ✅ **READ the relevant documentation file(s) from `/docs` directory**
-2. ✅ **Understand the patterns and guidelines specific to that topic**
-3. ✅ **Follow the established conventions exactly as documented**
-
-**DO NOT:**
-- ❌ Generate code without consulting the relevant `/docs` files
-- ❌ Assume patterns or conventions without verification
-- ❌ Skip documentation even for "simple" tasks
-- ❌ Create or use `middleware.ts` — it is deprecated in Next.js 16; use `proxy.ts` instead
-
-**This is non-negotiable.** The documentation exists to ensure consistency, quality, and adherence to project standards. Every code generation task requires reviewing the appropriate documentation first.
-
----
 
 ## Quick Reference
 
@@ -33,27 +14,6 @@ This file serves as the main entry point for AI agents (LLMs) working on the Lin
 - **Database**: Neon PostgreSQL + Drizzle ORM
 - **Authentication**: Clerk
 - **Icons**: Lucide React
-
-### Documentation Index
-
-**⚠️ MANDATORY READING BEFORE CODE GENERATION ⚠️**
-
-The modular documentation in the `/docs` directory contains ALL critical implementation details. **You MUST read the relevant documentation file(s) BEFORE generating ANY code.**
-
-**Available Documentation:**
-
-- **UI Components**: [ui-components.md](docs/ui-components.md) - shadcn/ui usage guidelines and patterns
-  - Read BEFORE: Creating or modifying any UI component
-  
-- **Authentication**: [authentication.md](docs/authentication.md) - Clerk setup, protected routes, and auth patterns
-  - Read BEFORE: Implementing auth, protected routes, or user-related features
-
-**Additional Documentation** (reference from "Getting Help" section):
-- TypeScript patterns and conventions
-- React/Next.js best practices
-- Styling guidelines
-- Database operations and schema changes
-- Project structure and organization
 
 
 ## ⚠️ CRITICAL: middleware.ts is DEPRECATED — Use proxy.ts Instead
@@ -161,11 +121,6 @@ git push origin feature/description
 
 ### Creating a New Feature
 
-**0. ⚠️ READ DOCUMENTATION FIRST** (MANDATORY)
-   - **Identify which `/docs` files are relevant to your feature**
-   - **READ those documentation files completely**
-   - **Understand the patterns before proceeding**
-
 1. **Define database schema** (if needed)
    - **Read**: [database.md](docs/database.md) FIRST
    - Add table to `db/schema.ts`
@@ -249,23 +204,13 @@ export async function POST(request: NextRequest) {
 
 ## When in Doubt
 
-1. **ALWAYS check the relevant documentation file in `/docs` FIRST**
-2. Review existing code for similar patterns
-3. Follow Next.js and React best practices
-4. Prioritize type safety and user experience
-5. Write clean, maintainable code
+1. Review existing code for similar patterns
+2. Follow Next.js and React best practices
+3. Prioritize type safety and user experience
+4. Write clean, maintainable code
 
 **Remember: Documentation is not optional. It is mandatory reading before any code generation.**
 
-## Getting Help
-
-- **UI Components**: See [07-ui-components.md](docs/07-ui-components.md)
-- **Authentication & Authorization**: See [06-authentication.md](docs/06-authentication.md)
-- **Project Structure**: See [05-project-structure.md](docs/05-project-structure.md)
-- **TypeScript Issues**: See [01-typescript.md](docs/01-typescript.md)
-- **React/Next.js Questions**: See [02-react-nextjs.md](docs/02-react-nextjs.md)
-- **Styling Problems**: See [03-styling.md](docs/03-styling.md)
-- **Database Queries**: See [04-database.md](docs/04-database.md)
 
 ---
 
@@ -276,7 +221,6 @@ export async function POST(request: NextRequest) {
 These guidelines ensure code consistency, maintainability, and quality. 
 
 **YOU MUST ALWAYS:**
-- ✅ Read the relevant detailed documentation in `/docs` BEFORE generating code
 - ✅ Follow the patterns and conventions exactly as documented
 - ✅ Verify your understanding against the documentation
 
