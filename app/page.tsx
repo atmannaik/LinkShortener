@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { SignUpButton } from '@clerk/nextjs';
+import { SignInButton, SignUpButton, SignedOut } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -47,24 +47,37 @@ export default async function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {/* Hero */}
-      <main className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
+      <main className="flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-12 text-center">
         <Badge variant="secondary" className="mb-6">
           Free to get started
         </Badge>
-        <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+        <h1
+          id="hero-title"
+          className="max-w-3xl text-5xl font-bold tracking-tight text-foreground sm:text-7xl"
+        >
+          Link Shortener
+        </h1>
+        <p className="mt-4 max-w-3xl text-xl font-semibold tracking-tight text-muted-foreground sm:text-2xl">
           Shorten URLs,{' '}
           <span className="text-primary">Share With Ease</span>
-        </h1>
+        </p>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">
           Transform long, unwieldy URLs into clean, shareable short links.
           Manage all your links from one simple dashboard.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
-            <Button size="lg" className="px-8">
-              Get Started — It&apos;s Free
-            </Button>
-          </SignUpButton>
+          <SignedOut>
+            <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+              <Button size="lg" variant="outline" className="px-8">
+                Sign In
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
+              <Button size="lg" className="px-8">
+                Get Started — It&apos;s Free
+              </Button>
+            </SignUpButton>
+          </SignedOut>
         </div>
       </main>
 
