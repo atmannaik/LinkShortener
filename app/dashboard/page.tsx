@@ -7,6 +7,7 @@ import { ExternalLink } from 'lucide-react';
 import { CreateLinkDialog } from './CreateLinkDialog';
 import { EditLinkDialog } from './EditLinkDialog';
 import { DeleteLinkDialog } from './DeleteLinkDialog';
+import { ShareLinkButton } from './ShareLinkButton';
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -36,31 +37,34 @@ export default async function DashboardPage() {
             <li key={link.id}>
               <Card>
                 <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-start justify-between gap-4">
                     <CardTitle className="text-base font-medium">
                       <Badge variant="secondary" className="font-mono text-sm">
                         /{link.shortCode}
                       </Badge>
                     </CardTitle>
                     <div className="flex items-center gap-1">
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(link.createdAt).toLocaleDateString()}
-                      </span>
-                      <EditLinkDialog link={link} />
-                      <DeleteLinkDialog link={link} />
+                        <ShareLinkButton shortCode={link.shortCode} />
+                        <EditLinkDialog link={link} />
+                        <DeleteLinkDialog link={link} />
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 truncate text-sm text-blue-600 hover:underline dark:text-blue-400"
-                  >
-                    <ExternalLink className="size-3.5 shrink-0" />
-                    {link.url}
-                  </a>
+                  <div className="flex items-center justify-between gap-4">
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 truncate text-sm text-blue-600 hover:underline dark:text-blue-400"
+                    >
+                      <ExternalLink className="size-3.5 shrink-0" />
+                      {link.url}
+                    </a>
+                    <span className="shrink-0 text-sm text-muted-foreground">
+                      {new Date(link.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
                 </CardContent>
               </Card>
             </li>

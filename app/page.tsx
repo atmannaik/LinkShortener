@@ -6,9 +6,6 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import { Badge } from '@/components/ui/badge';
 import {
   Link2,
-  BarChart3,
-  Zap,
-  Shield,
   Globe,
   MousePointerClick,
 } from 'lucide-react';
@@ -16,27 +13,9 @@ import {
 const features = [
   {
     icon: Link2,
-    title: 'Custom Short Links',
+    title: 'Short Links',
     description:
-      'Create memorable, branded short links for any URL in seconds.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Click Analytics',
-    description:
-      'Track every click and gain insights into who is visiting your links.',
-  },
-  {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description:
-      'Ultra-low latency redirects powered by edge infrastructure worldwide.',
-  },
-  {
-    icon: Shield,
-    title: 'Secure & Reliable',
-    description:
-      'Your links are protected with industry-standard security practices.',
+      'Create clean, short links for any URL in seconds.',
   },
   {
     icon: Globe,
@@ -48,14 +27,14 @@ const features = [
     icon: MousePointerClick,
     title: 'Easy to Use',
     description:
-      'Intuitive dashboard to manage all your links in one place.',
+      'Intuitive dashboard to create, edit, and manage all your links in one place.',
   },
 ];
 
 const steps = [
   { step: '1', title: 'Paste your URL', description: 'Enter any long URL into the link shortener.' },
   { step: '2', title: 'Get a short link', description: 'Receive a compact, shareable short link instantly.' },
-  { step: '3', title: 'Share & track', description: 'Share it anywhere and monitor performance in real time.' },
+  { step: '3', title: 'Share everywhere', description: 'Copy your short link and share it anywhere you like.' },
 ];
 
 export default async function Home() {
@@ -74,11 +53,11 @@ export default async function Home() {
         </Badge>
         <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
           Shorten URLs,{' '}
-          <span className="text-primary">Amplify Your Reach</span>
+          <span className="text-primary">Share With Ease</span>
         </h1>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-          Transform long, unwieldy URLs into clean, trackable short links.
-          Share smarter and measure what matters.
+          Transform long, unwieldy URLs into clean, shareable short links.
+          Manage all your links from one simple dashboard.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
@@ -96,7 +75,7 @@ export default async function Home() {
             Everything you need
           </h2>
           <p className="mb-12 text-center text-muted-foreground">
-            Powerful features to help you manage and track your links.
+            Simple tools to help you shorten and manage your links.
           </p>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, description }) => (
@@ -144,7 +123,7 @@ export default async function Home() {
             Ready to get started?
           </h2>
           <p className="mb-8 text-muted-foreground">
-            Join thousands of users shortening and tracking their links today.
+            Join users shortening and sharing their links today.
           </p>
           <SignUpButton mode="modal">
             <Button size="lg" className="px-10">
