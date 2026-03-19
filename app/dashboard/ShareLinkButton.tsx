@@ -96,14 +96,14 @@ export function ShareLinkButton({ shortCode }: ShareLinkButtonProps) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm overflow-hidden">
         <DialogHeader>
           <DialogTitle>Share link</DialogTitle>
         </DialogHeader>
 
         {/* Short URL + Copy icon */}
-        <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-3 py-2">
-          <span className="flex-1 truncate font-mono text-sm">{shortUrl}</span>
+        <div className="flex min-w-0 items-center gap-2 overflow-hidden rounded-md border bg-muted/50 px-3 py-2">
+          <span className="min-w-0 flex-1 truncate font-mono text-sm">{shortUrl}</span>
           <Button
             variant="ghost"
             size="icon"
@@ -120,7 +120,7 @@ export function ShareLinkButton({ shortCode }: ShareLinkButtonProps) {
         </div>
 
         {/* Platform share buttons */}
-        <div className="flex justify-between gap-1 pt-1">
+        <div className="grid grid-cols-6 gap-1 pt-1">
           {PLATFORMS.map(({ name, Icon, bg, getHref }) => (
             <button
               key={name}
@@ -129,12 +129,12 @@ export function ShareLinkButton({ shortCode }: ShareLinkButtonProps) {
               className="group flex flex-col items-center gap-1.5"
             >
               <div
-                className="flex size-11 items-center justify-center rounded-full text-white transition-opacity group-hover:opacity-80"
+                className="flex size-10 items-center justify-center rounded-full text-white transition-opacity group-hover:opacity-80"
                 style={{ backgroundColor: bg }}
               >
-                <Icon className="size-5" />
+                <Icon className="size-4.5" />
               </div>
-              <span className="text-xs text-muted-foreground">{name}</span>
+              <span className="w-full truncate text-center text-[10px] text-muted-foreground">{name}</span>
             </button>
           ))}
         </div>

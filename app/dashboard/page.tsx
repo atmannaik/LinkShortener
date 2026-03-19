@@ -56,7 +56,7 @@ export default async function DashboardPage() {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 truncate text-sm text-blue-600 hover:underline dark:text-blue-400"
+                      className="flex min-w-0 items-center gap-1.5 truncate text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                       <ExternalLink className="size-3.5 shrink-0" />
                       {link.url}
