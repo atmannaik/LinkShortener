@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LinkShortener
+
+A full-stack URL shortener built with Next.js. Paste any long URL and get a short, shareable link in seconds.
+
+**Live Demo:** [https://link-shortener-atmannaik.vercel.app](https://link-shortener-atmannaik.vercel.app)
+
+---
+
+## Features
+
+- **Shorten URLs** — Paste any long URL and generate a short link instantly
+- **Custom slugs** — Optionally choose your own short code (e.g. `/l/my-link`) instead of a random one
+- **Edit links** — Update the destination URL or slug of any existing link
+- **Delete links** — Remove links you no longer need, with a confirmation step
+- **Share links** — One-click sharing to WhatsApp, X (Twitter), Telegram, LinkedIn, Facebook, and email — plus a copy-to-clipboard button
+- **Instant redirects** — Visiting a short link redirects immediately to the original URL
+- **Authentication** — Sign in / sign up via Clerk; your links are private to your account
+- **Dashboard** — View and manage all your links in one place
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript 5 (strict) |
+| UI | React 19 + Tailwind CSS v4 + shadcn/ui |
+| Icons | Lucide React |
+| Database | Neon PostgreSQL (serverless) |
+| ORM | Drizzle ORM |
+| Authentication | Clerk |
+| Validation | Zod |
+| Deployment | Vercel |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A [Neon](https://neon.tech) PostgreSQL database
+- A [Clerk](https://clerk.com) application
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/atmannaik/LinkShortener.git
+cd LinkShortener
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up environment variables by creating a `.env.local` file:
+
+```env
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+# Neon Database
+DATABASE_URL=your_neon_database_connection_string
+```
+
+4. Push the database schema:
+
+```bash
+npx drizzle-kit push
+```
+
+5. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+app/
+  page.tsx              # Landing / marketing page
+  dashboard/
+    page.tsx            # User dashboard — lists and manages links
+    actions.ts          # Server Actions (create, edit, delete)
+  l/[shortcode]/
+    route.ts            # Redirect handler
+  link-not-found/
+    page.tsx            # 404 page for unknown short codes
+components/
+  NavBar.tsx            # Navigation bar
+  ui/                   # shadcn/ui component primitives
+data/
+  links.ts              # All database query functions
+db/
+  schema.ts             # Drizzle schema definition
+  index.ts              # Database connection
+proxy.ts                # Clerk middleware (route protection)
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database Schema
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A single `links` table stores all shortened URLs:
 
-## Deploy on Vercel
+| Column | Type | Description |
+|---|---|---|
+| `id` | `text` | Primary key (UUID) |
+| `user_id` | `text` | Clerk user ID (owner) |
+| `short_code` | `text` | The slug used in the short URL |
+| `url` | `text` | The original long URL |
+| `created_at` | `timestamp` | When the link was created |
+| `updated_at` | `timestamp` | When the link was last edited |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+
+npx drizzle-kit push     # Push schema changes to the database (development)
+npx drizzle-kit generate # Generate SQL migration files
+npx drizzle-kit studio   # Open Drizzle Studio (database GUI)
+```
