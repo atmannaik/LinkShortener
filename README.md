@@ -2,7 +2,7 @@
 
 A full-stack URL shortener built with Next.js. Paste any long URL and get a short, shareable link in seconds.
 
-**Live Demo:** [https://link-shortener-atmannaik.vercel.app](https://link-shortener-atmannaik.vercel.app)
+**Live Demo:** [https://atmannaik-link-shortener.vercel.app](https://atmannaik-link-shortener.vercel.app)
 
 ---
 
