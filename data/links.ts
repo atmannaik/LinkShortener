@@ -39,11 +39,20 @@ export async function getLinkById(id: string): Promise<SelectLink | undefined> {
 
 export async function updateLinkById(
   id: string,
-  data: { url: string; shortCode: string }
+  data: { url: string; shortCode: string; isPrivate?: boolean }
 ): Promise<SelectLink> {
   const [link] = await db
     .update(links)
     .set({ ...data, updatedAt: new Date() })
+    .where(eq(links.id, id))
+    .returning();
+  return link;
+}
+
+export async function setLinkPrivacy(id: string, isPrivate: boolean): Promise<SelectLink> {
+  const [link] = await db
+    .update(links)
+    .set({ isPrivate, updatedAt: new Date() })
     .where(eq(links.id, id))
     .returning();
   return link;

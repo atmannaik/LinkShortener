@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { SelectLink } from '@/db/schema';
 import { editLink } from './actions';
 
@@ -25,6 +26,7 @@ export function EditLinkDialog({ link }: EditLinkDialogProps) {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState(link.url);
   const [slug, setSlug] = useState(link.shortCode);
+  const [isPrivate, setIsPrivate] = useState(link.isPrivate);
   const [urlError, setUrlError] = useState('');
   const [slugError, setSlugError] = useState('');
   const [generalError, setGeneralError] = useState('');
@@ -33,6 +35,7 @@ export function EditLinkDialog({ link }: EditLinkDialogProps) {
   function resetState() {
     setUrl(link.url);
     setSlug(link.shortCode);
+    setIsPrivate(link.isPrivate);
     setUrlError('');
     setSlugError('');
     setGeneralError('');
@@ -50,7 +53,7 @@ export function EditLinkDialog({ link }: EditLinkDialogProps) {
     setGeneralError('');
 
     startTransition(async () => {
-      const result = await editLink({ id: link.id, url, slug });
+      const result = await editLink({ id: link.id, url, slug, isPrivate });
 
       if (!result.success) {
         const { error } = result;
@@ -113,6 +116,19 @@ export function EditLinkDialog({ link }: EditLinkDialogProps) {
               />
             </div>
             {slugError && <p className="text-sm text-destructive">{slugError}</p>}
+          </div>
+
+          <div className="flex items-center justify-between gap-4 rounded-lg border p-3">
+            <div className="space-y-0.5">
+              <Label htmlFor="edit-is-private">Private link</Label>
+              <p className="text-sm text-muted-foreground">Only you can use this link</p>
+            </div>
+            <Switch
+              id="edit-is-private"
+              checked={isPrivate}
+              onCheckedChange={setIsPrivate}
+              disabled={isPending}
+            />
           </div>
 
           {generalError && <p className="text-sm text-destructive">{generalError}</p>}

@@ -14,12 +14,14 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { createLink } from './actions';
 
 export function CreateLinkDialog() {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState('');
   const [slug, setSlug] = useState('');
+  const [isPrivate, setIsPrivate] = useState(true);
   const [urlError, setUrlError] = useState('');
   const [slugError, setSlugError] = useState('');
   const [generalError, setGeneralError] = useState('');
@@ -28,6 +30,7 @@ export function CreateLinkDialog() {
   function resetState() {
     setUrl('');
     setSlug('');
+    setIsPrivate(true);
     setUrlError('');
     setSlugError('');
     setGeneralError('');
@@ -45,7 +48,7 @@ export function CreateLinkDialog() {
     setGeneralError('');
 
     startTransition(async () => {
-      const result = await createLink({ url, slug });
+      const result = await createLink({ url, slug, isPrivate });
 
       if (!result.success) {
         const { error } = result;
@@ -116,6 +119,19 @@ export function CreateLinkDialog() {
             {slugError && (
               <p className="text-sm text-destructive">{slugError}</p>
             )}
+          </div>
+
+          <div className="flex items-center justify-between gap-4 rounded-lg border p-3">
+            <div className="space-y-0.5">
+              <Label htmlFor="is-private">Private link</Label>
+              <p className="text-sm text-muted-foreground">Only you can use this link</p>
+            </div>
+            <Switch
+              id="is-private"
+              checked={isPrivate}
+              onCheckedChange={setIsPrivate}
+              disabled={isPending}
+            />
           </div>
 
           {generalError && (

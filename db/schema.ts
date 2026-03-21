@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, index, uniqueIndex } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, boolean, index, uniqueIndex } from 'drizzle-orm/pg-core';
 
 export const links = pgTable(
   'links',
@@ -7,6 +7,7 @@ export const links = pgTable(
     userId: text('user_id').notNull(),
     shortCode: text('short_code').notNull(),
     url: text('url').notNull(),
+    isPrivate: boolean('is_private').notNull().default(true),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
   },

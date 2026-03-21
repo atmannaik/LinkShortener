@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import {
   Share2,
   Copy,
   Check,
   Mail,
+  Lock,
 } from 'lucide-react';
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -41,13 +42,17 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
+import { makePublic } from './actions';
 
 interface ShareLinkButtonProps {
   shortCode: string;
+  id: string;
+  isPrivate: boolean;
 }
 
 const PLATFORMS = [
@@ -94,14 +99,38 @@ const PLATFORMS = [
   },
 ] as const;
 
-export function ShareLinkButton({ shortCode }: ShareLinkButtonProps) {
-  const [open, setOpen] = useState(false);
+export function ShareLinkButton({ shortCode, id, isPrivate }: ShareLinkButtonProps) {
+  const [shareOpen, setShareOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [makingPublicError, setMakingPublicError] = useState('');
+  const [isMakingPublic, startMakingPublic] = useTransition();
   const [copied, setCopied] = useState(false);
   const [shortUrl, setShortUrl] = useState(`/l/${shortCode}`);
 
   useEffect(() => {
     setShortUrl(`${window.location.origin}/l/${shortCode}`);
   }, [shortCode]);
+
+  function handleShareClick() {
+    if (isPrivate) {
+      setMakingPublicError('');
+      setConfirmOpen(true);
+    } else {
+      setShareOpen(true);
+    }
+  }
+
+  function handleConfirmMakePublic() {
+    startMakingPublic(async () => {
+      const result = await makePublic({ id });
+      if (!result.success) {
+        setMakingPublicError(result.error);
+        return;
+      }
+      setConfirmOpen(false);
+      setShareOpen(true);
+    });
+  }
 
   async function handleCopy() {
     await navigator.clipboard.writeText(shortUrl);
@@ -114,56 +143,98 @@ export function ShareLinkButton({ shortCode }: ShareLinkButtonProps) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="size-7" aria-label="Share link">
-          <Share2 className="size-3.5" />
-        </Button>
-      </DialogTrigger>
+    <>
+      <Button
+        variant="outline"
+        size="icon"
+        className="size-7"
+        aria-label="Share link"
+        onClick={handleShareClick}
+      >
+        <Share2 className="size-3.5" />
+      </Button>
 
-      <DialogContent className="sm:max-w-sm overflow-hidden">
-        <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
-        </DialogHeader>
-
-        {/* Short URL + Copy icon */}
-        <div className="flex min-w-0 items-center gap-2 overflow-hidden rounded-md border bg-muted/50 px-3 py-2">
-          <span className="min-w-0 flex-1 truncate font-mono text-sm">{shortUrl}</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-7 shrink-0"
-            onClick={handleCopy}
-            aria-label="Copy link"
-          >
-            {copied ? (
-              <Check className="size-3.5 text-green-500" />
-            ) : (
-              <Copy className="size-3.5" />
-            )}
-          </Button>
-        </div>
-
-        {/* Platform share buttons */}
-        <div className="grid grid-cols-6 gap-1 pt-1">
-          {PLATFORMS.map(({ name, Icon, bg, getHref }) => (
-            <button
-              key={name}
-              onClick={() => handlePlatformClick(getHref)}
-              aria-label={`Share on ${name}`}
-              className="group flex flex-col items-center gap-1.5"
+      {/* Confirmation dialog — shown when trying to share a private link */}
+      <Dialog open={confirmOpen} onOpenChange={(v) => { if (!isMakingPublic) setConfirmOpen(v); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="size-4" />
+              This link is private
+            </DialogTitle>
+            <DialogDescription>
+              To share this link, it must be set to public. Anyone with the link will be able to use it to get redirected.
+            </DialogDescription>
+          </DialogHeader>
+          {makingPublicError && (
+            <p className="text-sm text-destructive">{makingPublicError}</p>
+          )}
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setConfirmOpen(false)}
+              disabled={isMakingPublic}
             >
-              <div
-                className="flex size-10 items-center justify-center rounded-full text-white transition-opacity group-hover:opacity-80"
-                style={{ backgroundColor: bg }}
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleConfirmMakePublic}
+              disabled={isMakingPublic}
+            >
+              {isMakingPublic ? 'Making public…' : 'Make Public & Share'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Share dialog */}
+      <Dialog open={shareOpen} onOpenChange={setShareOpen}>
+        <DialogContent className="sm:max-w-sm overflow-hidden">
+          <DialogHeader>
+            <DialogTitle>Share link</DialogTitle>
+          </DialogHeader>
+
+          {/* Short URL + Copy icon */}
+          <div className="flex min-w-0 items-center gap-2 overflow-hidden rounded-md border bg-muted/50 px-3 py-2">
+            <span className="min-w-0 flex-1 truncate font-mono text-sm">{shortUrl}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-7 shrink-0"
+              onClick={handleCopy}
+              aria-label="Copy link"
+            >
+              {copied ? (
+                <Check className="size-3.5 text-green-500" />
+              ) : (
+                <Copy className="size-3.5" />
+              )}
+            </Button>
+          </div>
+
+          {/* Platform share buttons */}
+          <div className="grid grid-cols-6 gap-1 pt-1">
+            {PLATFORMS.map(({ name, Icon, bg, getHref }) => (
+              <button
+                key={name}
+                onClick={() => handlePlatformClick(getHref)}
+                aria-label={`Share on ${name}`}
+                className="group flex flex-col items-center gap-1.5"
               >
-                <Icon className="size-4.5" />
-              </div>
-              <span className="w-full truncate text-center text-[10px] text-muted-foreground">{name}</span>
-            </button>
-          ))}
-        </div>
-      </DialogContent>
-    </Dialog>
+                <div
+                  className="flex size-10 items-center justify-center rounded-full text-white transition-opacity group-hover:opacity-80"
+                  style={{ backgroundColor: bg }}
+                >
+                  <Icon className="size-4.5" />
+                </div>
+                <span className="w-full truncate text-center text-[10px] text-muted-foreground">{name}</span>
+              </button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

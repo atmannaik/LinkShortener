@@ -3,7 +3,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { insertLink, isShortCodeTaken, getLinkById, updateLinkById, deleteLinkById, isShortCodeTakenExcluding } from '@/data/links';
+import { insertLink, isShortCodeTaken, getLinkById, updateLinkById, deleteLinkById, isShortCodeTakenExcluding, setLinkPrivacy } from '@/data/links';
 import { SelectLink } from '@/db/schema';
 
 const createLinkSchema = z.object({
@@ -17,11 +17,13 @@ const createLinkSchema = z.object({
     )
     .optional()
     .transform((val) => (val === '' ? undefined : val?.toLowerCase())),
+  isPrivate: z.boolean().optional(),
 });
 
 type CreateLinkInput = {
   url: string;
   slug: string;
+  isPrivate?: boolean;
 };
 
 type CreateLinkResult =
@@ -65,7 +67,7 @@ export async function createLink(input: CreateLinkInput): Promise<CreateLinkResu
   }
 
   try {
-    const link = await insertLink({ userId, url, shortCode });
+    const link = await insertLink({ userId, url, shortCode, isPrivate: parsed.data.isPrivate ?? true });
     revalidatePath('/dashboard');
     return { success: true, data: link };
   } catch (err) {
@@ -87,12 +89,14 @@ const editLinkSchema = z.object({
       'Slug may only contain letters, numbers, hyphens, and underscores'
     )
     .transform((val) => val.toLowerCase()),
+  isPrivate: z.boolean(),
 });
 
 type EditLinkInput = {
   id: string;
   url: string;
   slug: string;
+  isPrivate: boolean;
 };
 
 type EditLinkResult =
@@ -103,7 +107,7 @@ export async function editLink(input: EditLinkInput): Promise<EditLinkResult> {
   const { userId } = await auth();
   if (!userId) return { success: false, error: 'Unauthorized' };
 
-  const parsed = editLinkSchema.safeParse({ url: input.url, slug: input.slug });
+  const parsed = editLinkSchema.safeParse({ url: input.url, slug: input.slug, isPrivate: input.isPrivate });
   if (!parsed.success) {
     return { success: false, error: parsed.error.format() };
   }
@@ -123,11 +127,35 @@ export async function editLink(input: EditLinkInput): Promise<EditLinkResult> {
   }
 
   try {
-    const link = await updateLinkById(input.id, { url, shortCode: slug });
+    const link = await updateLinkById(input.id, { url, shortCode: slug, isPrivate: parsed.data.isPrivate });
     revalidatePath('/dashboard');
     return { success: true, data: link };
   } catch (err) {
     console.error('Failed to update link:', err);
+    return { success: false, error: 'Failed to update link. Please try again.' };
+  }
+}
+
+// ─── Make Public ──────────────────────────────────────────────────────────────
+
+type MakePublicInput = { id: string };
+type MakePublicResult = { success: true; data: SelectLink } | { success: false; error: string };
+
+export async function makePublic(input: MakePublicInput): Promise<MakePublicResult> {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: 'Unauthorized' };
+
+  const existing = await getLinkById(input.id);
+  if (!existing || existing.userId !== userId) {
+    return { success: false, error: 'Link not found.' };
+  }
+
+  try {
+    const link = await setLinkPrivacy(input.id, false);
+    revalidatePath('/dashboard');
+    return { success: true, data: link };
+  } catch (err) {
+    console.error('Failed to make link public:', err);
     return { success: false, error: 'Failed to update link. Please try again.' };
   }
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getLinkByShortCode } from '@/data/links';
+import { auth } from '@clerk/nextjs/server';
 
 export async function GET(
   _request: NextRequest,
@@ -13,6 +14,15 @@ export async function GET(
     const notFoundUrl = new URL('/link-not-found', _request.url);
     notFoundUrl.searchParams.set('code', shortcode);
     return NextResponse.redirect(notFoundUrl, { status: 302 });
+  }
+
+  if (link.isPrivate) {
+    const { userId } = await auth();
+    if (!userId || userId !== link.userId) {
+      const notFoundUrl = new URL('/link-not-found', _request.url);
+      notFoundUrl.searchParams.set('code', shortcode);
+      return NextResponse.redirect(notFoundUrl, { status: 302 });
+    }
   }
 
   return NextResponse.redirect(link.url, { status: 302 });
