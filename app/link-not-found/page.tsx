@@ -25,7 +25,7 @@ export default async function LinkNotFoundPage({ searchParams }: LinkNotFoundPag
           </div>
           <h1 className="text-xl font-semibold text-foreground">Link not found</h1>
           <p className="text-sm text-muted-foreground">
-            The short link you&apos;re looking for doesn&apos;t exist or may have been removed.
+            This short link doesn&apos;t exist, has been removed, or is set to private and can only be used by its owner.
           </p>
         </div>
 

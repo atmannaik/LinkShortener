@@ -8,6 +8,7 @@ import { CreateLinkDialog } from './CreateLinkDialog';
 import { EditLinkDialog } from './EditLinkDialog';
 import { DeleteLinkDialog } from './DeleteLinkDialog';
 import { ShareLinkButton } from './ShareLinkButton';
+import { PrivacyToggleButton } from './PrivacyToggleButton';
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -58,6 +59,7 @@ export default async function DashboardPage() {
                     </CardTitle>
                     <div className="flex items-center gap-1">
                         <ShareLinkButton shortCode={link.shortCode} id={link.id} isPrivate={link.isPrivate} />
+                        <PrivacyToggleButton id={link.id} isPrivate={link.isPrivate} />
                         <EditLinkDialog link={link} />
                         <DeleteLinkDialog link={link} />
                     </div>

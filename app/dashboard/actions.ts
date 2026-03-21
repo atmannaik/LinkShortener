@@ -160,6 +160,30 @@ export async function makePublic(input: MakePublicInput): Promise<MakePublicResu
   }
 }
 
+// ─── Toggle Privacy ─────────────────────────────────────────────────────────
+
+type TogglePrivacyInput = { id: string; isPrivate: boolean };
+type TogglePrivacyResult = { success: true; data: SelectLink } | { success: false; error: string };
+
+export async function togglePrivacy(input: TogglePrivacyInput): Promise<TogglePrivacyResult> {
+  const { userId } = await auth();
+  if (!userId) return { success: false, error: 'Unauthorized' };
+
+  const existing = await getLinkById(input.id);
+  if (!existing || existing.userId !== userId) {
+    return { success: false, error: 'Link not found.' };
+  }
+
+  try {
+    const link = await setLinkPrivacy(input.id, input.isPrivate);
+    revalidatePath('/dashboard');
+    return { success: true, data: link };
+  } catch (err) {
+    console.error('Failed to toggle link privacy:', err);
+    return { success: false, error: 'Failed to update link. Please try again.' };
+  }
+}
+
 // ─── Delete Link ──────────────────────────────────────────────────────────────
 
 type DeleteLinkInput = {
