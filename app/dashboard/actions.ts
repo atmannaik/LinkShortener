@@ -16,7 +16,7 @@ const createLinkSchema = z.object({
       'Slug may only contain letters, numbers, hyphens, and underscores'
     )
     .optional()
-    .transform((val) => (val === '' ? undefined : val)),
+    .transform((val) => (val === '' ? undefined : val?.toLowerCase())),
 });
 
 type CreateLinkInput = {
@@ -85,7 +85,8 @@ const editLinkSchema = z.object({
     .regex(
       /^[a-zA-Z0-9_-]+$/,
       'Slug may only contain letters, numbers, hyphens, and underscores'
-    ),
+    )
+    .transform((val) => val.toLowerCase()),
 });
 
 type EditLinkInput = {

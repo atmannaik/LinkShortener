@@ -76,7 +76,7 @@ export function CreateLinkDialog() {
         <DialogHeader>
           <DialogTitle>Create Short Link</DialogTitle>
           <DialogDescription>
-            Paste a long URL and optionally choose a custom slug.
+            Paste a long URL and optionally choose a custom short-code.
           </DialogDescription>
         </DialogHeader>
 
@@ -99,7 +99,7 @@ export function CreateLinkDialog() {
 
           <div className="space-y-1.5">
             <Label htmlFor="slug">
-              Custom Slug{' '}
+              Custom Short-Code{' '}
               <span className="text-muted-foreground font-normal">(optional)</span>
             </Label>
             <div className="flex items-center gap-2">
@@ -108,7 +108,7 @@ export function CreateLinkDialog() {
                 id="slug"
                 placeholder="auto-generated"
                 value={slug}
-                onChange={(e) => setSlug(e.target.value)}
+                onChange={(e) => setSlug(e.target.value.toLowerCase())}
                 disabled={isPending}
                 className="font-mono"
               />
