@@ -13,8 +13,9 @@ A full-stack URL shortener built with Next.js. Paste any long URL and get a shor
 - **Edit links** — Update the destination URL or slug of any existing link
 - **Delete links** — Remove links you no longer need, with a confirmation step
 - **Share links** — One-click sharing to WhatsApp, X (Twitter), Telegram, LinkedIn, Facebook, and email — plus a copy-to-clipboard button
-- **Instant redirects** — Visiting a short link redirects immediately to the original URL
-- **Authentication** — Sign in / sign up via Clerk; your links are private to your account
+- **Private & public links** — Toggle any link between private (only you can use it) and public (anyone with the link can redirect); new links are private by default
+- **Instant redirects** — Visiting a short link redirects immediately to the original URL; private links show a "link not found" page to anyone other than the owner
+- **Authentication** — Sign in / sign up via Clerk; your links are tied to your account
 - **Dashboard** — View and manage all your links in one place
 
 ---
@@ -122,6 +123,7 @@ A single `links` table stores all shortened URLs:
 | `url` | `text` | The original long URL |
 | `created_at` | `timestamp` | When the link was created |
 | `updated_at` | `timestamp` | When the link was last edited |
+| `is_private` | `boolean` | Whether the link is private (default: `true`); private links only redirect for the owner |
 
 ---
 
