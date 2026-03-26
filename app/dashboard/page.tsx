@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getLinksByUserId } from '@/data/links';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Lock, Globe } from 'lucide-react';
 import { CreateLinkDialog } from './CreateLinkDialog';
@@ -38,32 +38,30 @@ export default async function DashboardPage() {
             <li key={link.id}>
               <Card>
                 <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between gap-4">
-                    <CardTitle className="min-w-0 flex-1 text-base font-medium">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <div className="max-w-[160px] overflow-x-auto sm:max-w-xs">
-                          <Badge variant="secondary" className="whitespace-nowrap font-mono text-sm">
-                            /{link.shortCode}
-                          </Badge>
-                        </div>
-                        {link.isPrivate ? (
-                          <Badge variant="outline" className="shrink-0 gap-1">
-                            <Lock className="size-3" />
-                            Private
-                          </Badge>
-                        ) : (
-                          <Badge variant="outline" className="shrink-0 gap-1 border-green-300 text-green-600 dark:border-green-700 dark:text-green-400">
-                            <Globe className="size-3" />
-                            Public
-                          </Badge>
-                        )}
+                  <div className="flex flex-col gap-3">
+                    {link.isPrivate ? (
+                      <Badge variant="outline" className="w-fit gap-1">
+                        <Lock className="size-3" />
+                        Private
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="w-fit gap-1 border-green-300 text-green-600 dark:border-green-700 dark:text-green-400">
+                        <Globe className="size-3" />
+                        Public
+                      </Badge>
+                    )}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 max-w-[40%] overflow-x-auto sm:max-w-[50%]">
+                        <Badge variant="secondary" className="whitespace-nowrap font-mono text-sm">
+                          /{link.shortCode}
+                        </Badge>
                       </div>
-                    </CardTitle>
-                    <div className="flex shrink-0 items-center gap-1">
+                      <div className="flex shrink-0 items-center gap-1">
                         <ShareLinkButton shortCode={link.shortCode} id={link.id} isPrivate={link.isPrivate} />
                         <PrivacyToggleButton id={link.id} isPrivate={link.isPrivate} />
                         <EditLinkDialog link={link} />
                         <DeleteLinkDialog link={link} />
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
