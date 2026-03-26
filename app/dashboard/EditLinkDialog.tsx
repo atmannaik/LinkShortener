@@ -120,8 +120,10 @@ export function EditLinkDialog({ link }: EditLinkDialogProps) {
 
           <div className="flex items-center justify-between gap-4 rounded-lg border p-3">
             <div className="space-y-0.5">
-              <Label htmlFor="edit-is-private">Private link</Label>
-              <p className="text-sm text-muted-foreground">Only you can use this link</p>
+              <Label htmlFor="edit-is-private">{isPrivate ? 'Private link' : 'Public link'}</Label>
+              <p className="text-sm text-muted-foreground">
+                {isPrivate ? 'Only you can use this link' : 'Anyone with the link can use it'}
+              </p>
             </div>
             <Switch
               id="edit-is-private"
