@@ -39,25 +39,27 @@ export default async function DashboardPage() {
               <Card>
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between gap-4">
-                    <CardTitle className="text-base font-medium">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="font-mono text-sm">
-                          /{link.shortCode}
-                        </Badge>
+                    <CardTitle className="min-w-0 flex-1 text-base font-medium">
+                      <div className="flex min-w-0 items-center gap-2">
+                        <div className="max-w-[160px] overflow-x-auto sm:max-w-xs">
+                          <Badge variant="secondary" className="whitespace-nowrap font-mono text-sm">
+                            /{link.shortCode}
+                          </Badge>
+                        </div>
                         {link.isPrivate ? (
-                          <Badge variant="outline" className="gap-1">
+                          <Badge variant="outline" className="shrink-0 gap-1">
                             <Lock className="size-3" />
                             Private
                           </Badge>
                         ) : (
-                          <Badge variant="outline" className="gap-1 border-green-300 text-green-600 dark:border-green-700 dark:text-green-400">
+                          <Badge variant="outline" className="shrink-0 gap-1 border-green-300 text-green-600 dark:border-green-700 dark:text-green-400">
                             <Globe className="size-3" />
                             Public
                           </Badge>
                         )}
                       </div>
                     </CardTitle>
-                    <div className="flex items-center gap-1">
+                    <div className="flex shrink-0 items-center gap-1">
                         <ShareLinkButton shortCode={link.shortCode} id={link.id} isPrivate={link.isPrivate} />
                         <PrivacyToggleButton id={link.id} isPrivate={link.isPrivate} />
                         <EditLinkDialog link={link} />
